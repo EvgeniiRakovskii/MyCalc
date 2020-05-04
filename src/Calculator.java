@@ -1,15 +1,24 @@
 import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+/*
+Проект для JavaMentor
+Калькулятор для римских и арабских чисел, данные вводятся в 1 строку,
+числа от 1 до 10;
+*/
 
 public class Calculator {
 
     public static  void checkCondition(int number){
+        //проверка вводимого числа
         if (number == 0 || number > 10)
          throw new IllegalArgumentException();
     }
-    public static class Numeral{
 
+    /* Класс Numeral, вводимое число передается в этот класс,
+        где определяется система счисления*/
+
+    public static class Numeral{
         private String number;
         public String type;
 
@@ -33,8 +42,8 @@ public class Calculator {
             int a=0,r=0;
             for ( int i =0; i < len; i++){
                 n[i] = number.charAt(i);
-                // проверяем по таблице ASCII является ли символ цифрой
-                // или буквой, соответствующей римской цифре;
+                /* проверяем по таблице ASCII является ли символ цифрой(от 0 до 10)
+                 или буквой, соответствующей римской цифре;*/
                 if( (byte)n[i] >= 48 && (byte)n[i]<=57) {
                     a++;
                 }
@@ -50,6 +59,7 @@ public class Calculator {
         }
     }
 
+    // Класс для арабских чисел
    public static class Arabic{
 
         int ArabNum;
@@ -73,6 +83,7 @@ public class Calculator {
         }
     }
 
+    // Класс для римских цифр
     public static class Roman{
         String Number;
         public Roman(Numeral Number){
@@ -107,11 +118,12 @@ public class Calculator {
                 return ArabicToRoman(r1 / r2);
             } else if ( operator.equals("*") ) {
                 return ArabicToRoman(r1 * r2);
-
             }
-            return null;
+            throw new IllegalArgumentException();
         }
     }
+
+    // Перечисление римских цифр  для конвертирования их в арабские и назад
     enum RomanNumeral {
         I(1), II(2), III(3), IV(4), V(5),
         VI(6), VII(7), VIII(8), IX(9), X(10),
@@ -131,17 +143,20 @@ public class Calculator {
     public static void main(String[] args) throws java.io.IOException {
 
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
+                // Cчитываем строку с консоли и разделяем её с помощью пробелов.
                 String exercise = reader.readLine();
-                String symbols[] = exercise.split(" ");
+                String[] symbols = exercise.split(" ");
 
+                // cоздаем два объекта чисел и помещаем в них значения с консоли
                 Numeral Number1 = new Numeral(symbols[0]);
                 Numeral Number2 = new Numeral(symbols[2]);
 
-                if (Number1.defineMetric() == "Arabic" && Number2.defineMetric() == "Arabic") {
+                // Проверяем чтобы числа были одинаковые, делаем соответствующую операцию и выводим результат
+                if (Number1.defineMetric().equals("Arabic") && Number2.defineMetric().equals("Arabic")) {
                     Arabic a1 = new Arabic(Number1);
                     Arabic a2 = new Arabic(Number2);
                     System.out.println(a1.OperationWith(a2, symbols[1]));
-                } else if (Number1.defineMetric() == "Roman" && Number2.defineMetric() == "Roman") {
+                } else if (Number1.defineMetric().equals("Roman") && Number2.defineMetric().equals("Roman")) {
                     Roman r1 = new Roman(Number1);
                     Roman r2 = new Roman(Number2);
                     System.out.println(r1.OperationWith(r2, symbols[1]));
